@@ -56,7 +56,34 @@ switch ($method) {
         echo 'DELETE';
         break;
     case 'POST':
-        echo 'POST';
+        $entityBody = file_get_contents('php://input');
+        $array = json_decode($entityBody, true);
+
+        $query = "INSERT INTO products SET name=:name, description=:description, price=:price, created=:created";
+
+        // prepare query for execution
+        $stmt = $con->prepare($query);
+
+        // bind the parameters
+        $array_added = [];
+
+        foreach($array as $value){
+            $stmt = $con->prepare($query);
+
+            $stmt->bindParam(':name', $value['name']);
+            $stmt->bindParam(':description', $value['description']);
+            $stmt->bindParam(':price', $value['price']);
+            $created=date('Y-m-d H:i:s');
+            $stmt->bindParam(':created', $created);
+
+            if ($stmt->execute()) {
+                $value['id'] = $con->lastInsertId();
+                $array_added[] = $value;
+            }
+        }
+
+        print json_encode($array_added);
+
         break;
     default:
         header('HTTP/1.1 405 Method Not Allowed');
