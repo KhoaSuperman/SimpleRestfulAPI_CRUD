@@ -36,7 +36,7 @@ switch ($method) {
 
         $array_updated = [];
 
-        foreach($array as $value){
+        foreach ($array as $value) {
             $stmt = $con->prepare($query);
 
             $stmt->bindParam(':name', $value['name']);
@@ -53,7 +53,21 @@ switch ($method) {
         print json_encode($array_updated);
         break;
     case 'DELETE':
-        echo 'DELETE';
+        $pathSegments = explode('/', $_SERVER['REQUEST_URI']);
+        $id = $pathSegments[2];
+
+        $query = "DELETE FROM products WHERE id = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bindParam(1, $id);
+
+        $array_deleted = [];
+
+        if ($stmt->execute()) {
+            $array_deleted[] = $id;
+        }
+
+        print json_encode($array_deleted);
+
         break;
     case 'POST':
         $entityBody = file_get_contents('php://input');
@@ -67,13 +81,13 @@ switch ($method) {
         // bind the parameters
         $array_added = [];
 
-        foreach($array as $value){
+        foreach ($array as $value) {
             $stmt = $con->prepare($query);
 
             $stmt->bindParam(':name', $value['name']);
             $stmt->bindParam(':description', $value['description']);
             $stmt->bindParam(':price', $value['price']);
-            $created=date('Y-m-d H:i:s');
+            $created = date('Y-m-d H:i:s');
             $stmt->bindParam(':created', $created);
 
             if ($stmt->execute()) {
