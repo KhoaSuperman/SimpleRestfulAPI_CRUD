@@ -1,17 +1,15 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <title>PDO Create New Record</title>
+<?php
+include_once "style.php";
+?>
 
-</head>
 <body>
 <?php
-if($_POST){
+if ($_POST) {
 
     // include database connection
     include 'database.php';
 
-    try{
+    try {
 
         // insert query
         $query = "INSERT INTO products SET name=:name, description=:description, price=:price, created=:created";
@@ -20,9 +18,9 @@ if($_POST){
         $stmt = $con->prepare($query);
 
         // posted values
-        $name=htmlspecialchars(strip_tags($_POST['name']));
-        $description=htmlspecialchars(strip_tags($_POST['description']));
-        $price=htmlspecialchars(strip_tags($_POST['price']));
+        $name = htmlspecialchars(strip_tags($_POST['name']));
+        $description = htmlspecialchars(strip_tags($_POST['description']));
+        $price = htmlspecialchars(strip_tags($_POST['price']));
 
         // bind the parameters
         $stmt->bindParam(':name', $name);
@@ -30,52 +28,86 @@ if($_POST){
         $stmt->bindParam(':price', $price);
 
         // specify when this record was inserted to the database
-        $created=date('Y-m-d H:i:s');
+        $created = date('Y-m-d H:i:s');
         $stmt->bindParam(':created', $created);
 
         // Execute the query
-        if($stmt->execute()){
-            echo "<div>Record was saved.</div>";
-        }else{
+        if ($stmt->execute()) {
+            echo "<div class='alert alert-success alert-dismissible fade in'>
+                <p>Record was saved</p>
+                <a href='index.php' class=''>
+                    <span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span> Back to list
+                </a>
+            </div>";
+        } else {
             die('Unable to save record.');
         }
 
-    }
-
-        // show error
-    catch(PDOException $exception){
+    } // show error
+    catch (PDOException $exception) {
         die('ERROR: ' . $exception->getMessage());
     }
 }
 ?>
 
-<!-- dynamic content will be here -->
-<!-- just a header -->
-<h1>PDO: Create a Record</h1>
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <h3 id="glyphicons" class="page-header">Create New Product
+            <small>Simple CRUD by KhoaHA</small>
+        </h3>
 
-<!-- html form here where the product information will be entered -->
-<form action='create.php' method='post'>
-    <table border='0'>
-        <tr>
-            <td>Name</td>
-            <td><input type='text' name='name'/></td>
-        </tr>
-        <tr>
-            <td>Description</td>
-            <td><textarea name='description'></textarea></td>
-        </tr>
-        <tr>
-            <td>Price</td>
-            <td><input type='text' name='price'/></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <input type='submit' value='Save'/>
-                <a href='index.php'>Back to read records</a>
-            </td>
-        </tr>
-    </table>
-</form>
+        <div class="x_content">
+            <form action='create.php' method='post' class="form-horizontal form-label-left">
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Product Name <span
+                            class="required">*</span>
+                    </label>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="name" name="name" required="required"
+                               class="form-control col-md-7 col-xs-12"
+                               data-parsley-id="4235">
+                        <ul class="parsley-errors-list" id="parsley-id-4235"></ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="description">Description <span
+                            class="required">*</span>
+                    </label>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <textarea class="form-control" id="description" name="description" rows="3"
+                            ></textarea>
+                        <ul class="parsley-errors-list" id="parsley-id-4235"></ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="price">Price <span
+                            class="required">*</span>
+                    </label>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="price" name="price" required="required"
+                               class="form-control col-md-7 col-xs-12"
+                               data-parsley-id="4235">
+                        <ul class="parsley-errors-list" id="parsley-id-4235"></ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12"></span>
+                    </label>
+
+                    <button type="submit" class="btn btn-primary col-md-6 col-sm-6 col-xs-12"
+                            data-target=".bs-example-modal-sm">
+                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Submit
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
