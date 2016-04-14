@@ -77,11 +77,12 @@ if ($_POST) {
                     </label>
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <textarea class="form-control" id="description" name="description" rows="3"
-                            ></textarea>
+                        <input type="text" id="description" name="description" required="required"
+                               class="form-control col-md-7 col-xs-12"
+                               data-parsley-id="4235">
                         <ul class="parsley-errors-list" id="parsley-id-4235"></ul>
                     </div>
-                </div>
+                </div
 
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="price">Price <span

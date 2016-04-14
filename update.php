@@ -108,9 +108,9 @@ if ($_POST) {
                     </label>
 
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <textarea class="form-control" id="description" name="description" rows="3">
-                            <?php echo htmlspecialchars($description, ENT_NOQUOTES); ?>
-                        </textarea>
+                        <input type="text" id="description" name="description" required="required"
+                               class="form-control col-md-7 col-xs-12"
+                               data-parsley-id="4235" value="<?php echo htmlspecialchars($description, ENT_NOQUOTES); ?>">
                         <ul class="parsley-errors-list" id="parsley-id-4235"></ul>
                     </div>
                 </div>
